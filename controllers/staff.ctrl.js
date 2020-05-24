@@ -1,15 +1,15 @@
-var usersModel = require('../models/users.model');
+var staffModel = require('../models/staff.model');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-var usersCtrl = {};
+var staffCtrl = {};
 
-usersCtrl.allUsers = async (req, res, next) => {
-  let data = await usersModel.find({});
+staffCtrl.allStaff = async (req, res, next) => {
+  let data = await staffModel.find({});
   res.status(201).json({ data: data });
 };
 
-usersCtrl.update = async (req, res, next) => {
-  let data = await usersModel.findOneAndUpdate(
+staffCtrl.updateStaff = async (req, res, next) => {
+  let data = await staffModel.findOneAndUpdate(
     { _id: req.params.id },
     {
       name: req.body.name,
@@ -17,29 +17,31 @@ usersCtrl.update = async (req, res, next) => {
       user: req.body.user,
       password: req.body.password,
       email: req.body.email,
+      position: req.body.position
     }
   );
   res.status(201).json({ status: 'User was updated successfully', data: data });
 };
 
-usersCtrl.signin = async (req, res, next) => {
-  let data = await usersModel.create({
+staffCtrl.createStaff = async (req, res, next) => {
+  let data = await staffModel.create({
     name: req.body.name,
     lastname: req.body.lastname,
     user: req.body.user,
     password: req.body.password,
     email: req.body.email,
+    position: req.body.position
   });
-  res.status(201).json({ status: 'User was created successfully', data: data });
+  res.status(201).json({ status: 'Staff was created successfully', data: data });
 };
 
-usersCtrl.deleteUser = async (req, res, next) => {
-    let data = await usersModel.findOneAndDelete({_id:req.params.id})
-    res.status(201).json({ status: 'User was deleted successfully', data: data });
+staffCtrl.deleteStaff = async (req, res, next) => {
+    let data = await staffModel.findOneAndDelete({_id:req.params.id})
+    res.status(201).json({ status: 'Staff was deleted successfully', data: data });
 }
 
-usersCtrl.login = async (req, res, next) => {
-  let user = await usersModel.findOne({ user: req.body.user});
+staffCtrl.loginStaff = async (req, res, next) => {
+  let user = await staffModel.findOne({ user: req.body.user});
   if (user){
     if (bcrypt.compareSync(req.body.password, user.password)){
       const token = jwt.sign({usuario:user}, req.app.get('secretKey'), {expiresIn:'1h'})
@@ -52,4 +54,4 @@ usersCtrl.login = async (req, res, next) => {
   }
 }
 
-module.exports = usersCtrl;
+module.exports = staffCtrl;
