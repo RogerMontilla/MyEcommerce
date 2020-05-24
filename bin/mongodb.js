@@ -9,9 +9,11 @@ mongoose.connect('mongodb://' + process.env.BD_HOST + '/' + process.env.BD_NAME,
   }
 });
 
-mongoose.mongoosePaginate =  mongoosePaginate.paginate.options = {
+mongoosePaginate.paginate.options = {
   lean: true,
-  limit: 5,
+  limit: 1,
 };
+
+mongoose.mongoosePaginate = mongoosePaginate;
 
 module.exports = mongoose;

@@ -9,6 +9,7 @@ var dotenv = require('dotenv').config();
 var index = require('./routes/index');
 var users = require('./routes/users');
 var staff = require('./routes/staff');
+var products = require('./routes/products');
 
 var app = express();
 
@@ -28,10 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/staff', staff);
+app.use('/products', validateUser ,products);
 
 //Validate users
-validateUser = (req, res, next) =>{
-  jwt.verify(req.header['x-access-token'], req.app.get('secretKey'), (err, decoded)=>{
+function validateUser(req, res, next){
+  jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), (err, decoded)=>{
     if (err){
       res.json({message: err.message});
     }else {

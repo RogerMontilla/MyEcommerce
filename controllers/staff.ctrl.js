@@ -9,17 +9,7 @@ staffCtrl.allStaff = async (req, res, next) => {
 };
 
 staffCtrl.updateStaff = async (req, res, next) => {
-  let data = await staffModel.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      name: req.body.name,
-      lastname: req.body.lastname,
-      user: req.body.user,
-      password: req.body.password,
-      email: req.body.email,
-      position: req.body.position
-    }
-  );
+  let data = await staffModel.update({ _id: req.params.id }, req.body, { multi: false });
   res.status(201).json({ status: 'User was updated successfully', data: data });
 };
 

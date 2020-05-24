@@ -9,16 +9,7 @@ usersCtrl.allUsers = async (req, res, next) => {
 };
 
 usersCtrl.update = async (req, res, next) => {
-  let data = await usersModel.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      name: req.body.name,
-      lastname: req.body.lastname,
-      user: req.body.user,
-      password: req.body.password,
-      email: req.body.email,
-    }
-  );
+  let data = await usersModel.update({ _id: req.params.id }, req.body, { multi: false });
   res.status(201).json({ status: 'User was updated successfully', data: data });
 };
 
