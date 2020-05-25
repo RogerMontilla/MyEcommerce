@@ -10,6 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var staff = require('./routes/staff');
 var products = require('./routes/products');
+var sales = require('./routes/sales');
 
 var app = express();
 
@@ -29,27 +30,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/staff', staff);
-app.use('/products', validateUser ,products);
+app.use('/products', validateUser, products);
+app.use('/sales', validateUser, sales);
 
 //Validate users
-function validateUser(req, res, next){
-  jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), (err, decoded)=>{
-    if (err){
-      res.json({message: err.message});
-    }else {
+function validateUser(req, res, next) {
+  jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), (err, decoded) => {
+    if (err) {
+      res.json({ message: err.message });
+    } else {
       req.body.userToken = decoded;
       next();
     }
-  })
+  });
 }
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

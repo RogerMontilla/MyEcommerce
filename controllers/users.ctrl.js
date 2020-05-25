@@ -33,7 +33,7 @@ usersCtrl.login = async (req, res, next) => {
   let user = await usersModel.findOne({ user: req.body.user});
   if (user){
     if (bcrypt.compareSync(req.body.password, user.password)){
-      const token = jwt.sign({usuario:user}, req.app.get('secretKey'), {expiresIn:'1h'})
+      const token = jwt.sign({userDecoded:user}, req.app.get('secretKey'), {expiresIn:'1h'})
       res.status(201).json({token:token})
     }else{
       res.json({message:'Invalid Password', data: null})
