@@ -9,23 +9,36 @@ const productSchema = new Schema({
   },
   sku: {
     type: String,
-    unique: true,
+    unique: false,
     required: true,
   },
   description: String,
   price: {
     type: Number,
     min: 0,
-    required: [true, 'Campo Precio es Obligatorio']
+    required: [true, 'Campo Precio es Obligatorio'],
+  },
+  offert: {
+    type: Number,
+    min: 0,
+    required: false,
   },
   quantity: Number,
-  //'categorias' es una coleccion en la base de datos, no necesito requerirla ya que mongoose la busca directamente en la base de datos
-  categoria: { 
-      type: String, 
-      required: true },
+  subcategory: {
+    type: Schema.ObjectId,
+    ref: 'subcategory',
+    required: false,
+  },
+  featured: {
+    type: Boolean,
+    required: false,
+  },
+  img: {
+    type: String,
+    required: false,
+  },
 });
 
-
-productSchema.set('toJSON',{getters:true,virtuals:true})
-productSchema.plugin(mongoose.mongoosePaginate)
-module.exports = mongoose.model('products', productSchema)
+productSchema.set('toJSON', { getters: true, virtuals: true });
+productSchema.plugin(mongoose.mongoosePaginate);
+module.exports = mongoose.model('products', productSchema);

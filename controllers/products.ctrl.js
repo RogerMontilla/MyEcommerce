@@ -1,8 +1,13 @@
 var productsModel = require('../models/products.model');
+var categoryModel = require('../models/category.model');
+var subcategoryModel = require('../models/subcategory.model') 
 var productsCtrl = {};
 
 productsCtrl.getAll = async function (req, res, next) {
-  let productos = await productsModel.paginate({},{ limit: 2, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 });
+  let productos = await productsModel.paginate(
+    {},
+    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 2, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
+  );
   console.log(productos);
   res.status(200).json(productos);
 };
@@ -21,17 +26,25 @@ productsCtrl.getById = async function (req, res, next) {
 productsCtrl.create = async function (req, res, next) {
   let producto = new productsModel({
     name: req.body.name,
-    description: req.body.description,
     sku: req.body.sku,
+    description: req.body.description,
     price: req.body.price,
+    offert: req.body.offert,
     quantity: req.body.quantity,
-    categoria: req.body.categoria,
+    subcategory: req.body.subcategory,
+    featured: req.body.featured,
+    img: req.body.img,
   });
   let data = await producto.save();
   res.status(201).json({ stauts: 'ok', data: data });
 };
 productsCtrl.update = async function (req, res, next) {
   let data = await productsModel.update({ _id: req.params.id }, req.body, { multi: false });
+  res.status(201).json({ status: 'ok', data: data });
+};
+
+productsCtrl.deleteProduct = async function (req, res, next) {
+  let data = await productsModel.findByIdAndDelete({ _id: req.params.id });
   res.status(201).json({ status: 'ok', data: data });
 };
 
