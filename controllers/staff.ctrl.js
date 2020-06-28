@@ -8,6 +8,11 @@ staffCtrl.allStaff = async (req, res, next) => {
   res.status(201).json({ data: data });
 };
 
+staffCtrl.getStaffById = async (req, res, next)=>{
+  let data = await staffModel.findById({_id:req.params.id});
+  res.status(201).json({ status: 'User was found successfully', data: data });
+}
+
 staffCtrl.updateStaff = async (req, res, next) => {
   let data = await staffModel.update({ _id: req.params.id }, req.body, { multi: false });
   res.status(201).json({ status: 'User was updated successfully', data: data });

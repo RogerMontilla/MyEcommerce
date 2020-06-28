@@ -31,7 +31,8 @@ const productSchema = new Schema({
   },
   featured: {
     type: Boolean,
-    required: false,
+    required: true,
+    default: false
   },
   img: {
     type: String,

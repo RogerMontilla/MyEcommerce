@@ -12,7 +12,7 @@ subcategoryCtrl.createSub = async function (req, res, next) {
 };
 
 subcategoryCtrl.getAllSub = async function (req, res, next) {
-  let categories = await subcategoryModel.find({});
+  let categories = await subcategoryModel.find({}).populate('parent');
   res.status(200).json(categories);
 };
 

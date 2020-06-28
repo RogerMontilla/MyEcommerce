@@ -4,4 +4,8 @@ var {createSub, getAllSub, updateSUb, deleteSubCategory } = require('../controll
 
 router.post('/create-subcategory', createSub)
 
+router.get('/list', getAllSub);
+
+router.delete('/delete/:id', deleteSubCategory)
+
 module.exports = router

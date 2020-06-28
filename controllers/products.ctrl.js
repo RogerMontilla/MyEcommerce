@@ -6,7 +6,7 @@ var productsCtrl = {};
 productsCtrl.getAll = async function (req, res, next) {
   let productos = await productsModel.paginate(
     {},
-    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 2, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
+    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 5, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
   );
   console.log(productos);
   res.status(200).json(productos);
