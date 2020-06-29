@@ -26,4 +26,9 @@ subcategoryCtrl.deleteSubCategory = async function(req, res, next){
   res.status(200).json(categories)
 }
 
+subcategoryCtrl.getSubCategoryById = async function(req, res, next){
+  let categories = await subcategoryModel.findById({_id:req.params.id})
+  res.status(200).json(categories)
+}
+
 module.exports = subcategoryCtrl;

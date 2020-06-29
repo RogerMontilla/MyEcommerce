@@ -25,4 +25,9 @@ categoryCtrl.deleteCategory = async function(req, res, next){
   res.status(200).json(categories)
 }
 
+categoryCtrl.getCategoryById = async function(req, res, next){
+  let categories = await categoryModel.findById({_id:req.params.id})
+  res.status(200).json(categories)
+}
+
 module.exports = categoryCtrl;
