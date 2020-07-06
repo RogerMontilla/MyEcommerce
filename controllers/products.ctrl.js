@@ -1,7 +1,8 @@
-var productsModel = require('../models/products.model');
-var categoryModel = require('../models/category.model');
-var subcategoryModel = require('../models/subcategory.model') 
+var productsModel = require('../models/products.model'); 
 var productsCtrl = {};
+var multer = require('multer');
+const { eventNames } = require('../models/products.model');
+var multerUpload = multer({dest: process.env.IMG_DIR}).single('photo');
 
 productsCtrl.getAll = async function (req, res, next) {
   let productos = await productsModel.paginate(
@@ -33,7 +34,7 @@ productsCtrl.create = async function (req, res, next) {
     quantity: req.body.quantity,
     subcategory: req.body.subcategory,
     featured: req.body.featured,
-    img: req.body.img,
+    images: req.body.images,
   });
   let data = await producto.save();
   res.status(201).json({ stauts: 'ok', data: data });
@@ -47,5 +48,17 @@ productsCtrl.deleteProduct = async function (req, res, next) {
   let data = await productsModel.findByIdAndDelete({ _id: req.params.id });
   res.status(201).json({ status: 'ok', data: data });
 };
+
+productsCtrl.uploadImg = async function (req, res, next){
+  var path = '';
+  multerUpload(req, res, function(err){
+    if(err){
+      console.log(err);
+      next()
+    }
+    path = req.file.path;
+    res.status(201).json({status: 'success', message: 'Img upload successfuly', data: req.file})
+  })
+}
 
 module.exports = productsCtrl;

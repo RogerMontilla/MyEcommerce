@@ -47,7 +47,7 @@ app.options("/*", function(req, res, next){
 app.use('/', index);
 app.use('/users', users);
 app.use('/staff', staff);
-app.use('/products', validateStaff,products);
+app.use('/products',products);
 app.use('/sales', sales);
 app.use('/category', category);
 app.use('/subcategory', subcategory);

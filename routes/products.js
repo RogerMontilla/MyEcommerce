@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var { validateStaff } = require('../middlewares/validateUser')
-var {getAll, getFeatured, getById, create, update, deleteProduct} = require('../controllers/products.ctrl')
+var {getAll, getFeatured, getById, create, update, deleteProduct, uploadImg} = require('../controllers/products.ctrl')
 
 /* GET products */
 router.get('/', validateStaff, getAll);
@@ -18,7 +18,9 @@ router.get('/:id', getById);
 /*Actualizar un Producto */
 router.put('/:id', update);
 
-router.delete('/delete-product/:id', deleteProduct)
+router.delete('/delete-product/:id', deleteProduct);
+
+router.post('/upload-img', uploadImg);
 
 
 
