@@ -1,7 +1,7 @@
 const mongoose = require('../bin/mongodb');
 const Schema = mongoose.Schema;
 
-var imgSchema = new Schema({ 
+var imgSchema = new Schema({
   destination: String,
   encoding: String,
   fieldname: String,
@@ -43,9 +43,9 @@ const productSchema = new Schema({
   featured: {
     type: Boolean,
     required: true,
-    default: false
+    default: false,
   },
-  images:imgSchema,
+  images: { type: imgSchema, required: true },
 });
 
 productSchema.set('toJSON', { getters: true, virtuals: true });

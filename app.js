@@ -13,7 +13,7 @@ var staff = require('./routes/staff');
 var products = require('./routes/products');
 var sales = require('./routes/sales');
 var category = require('./routes/category');
-var subcategory = require('./routes/subcategory')
+var subcategory = require('./routes/subcategory');
 
 var app = express();
 
@@ -31,28 +31,29 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /** HEADER INICIO */
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin','http://localhost:4200');
-  res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,PUT');
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT');
   next();
 });
-app.options("/*", function(req, res, next){
+app.options('/*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With,x-access-token');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, Content-Length, X-Requested-With,x-access-token'
+  );
   res.send(200);
 });
 /** HEADER FIN */
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/staff', staff);
-app.use('/products',products);
+app.use('/staff', staff); //Se valida dentro de staff para dejar al login sin autenticacion
+app.use('/products', validateStaff, products);
 app.use('/sales', sales);
-app.use('/category', category);
+app.use('/category', validateStaff,category);
 app.use('/subcategory', subcategory);
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

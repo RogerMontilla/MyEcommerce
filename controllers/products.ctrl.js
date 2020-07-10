@@ -1,6 +1,7 @@
 var productsModel = require('../models/products.model'); 
 var productsCtrl = {};
 var multer = require('multer');
+var fs = require('fs')
 const { eventNames } = require('../models/products.model');
 var multerUpload = multer({dest: process.env.IMG_DIR}).single('photo');
 
@@ -40,13 +41,31 @@ productsCtrl.create = async function (req, res, next) {
   res.status(201).json({ stauts: 'ok', data: data });
 };
 productsCtrl.update = async function (req, res, next) {
-  let data = await productsModel.update({ _id: req.params.id }, req.body, { multi: false });
-  res.status(201).json({ status: 'ok', data: data });
+  try {
+    let data = await productsModel.update({ _id: req.params.id }, req.body, { multi: false });
+    //Si hay datos de una imagen vieja, elimina la imagen
+    if(req.query.oldImg){
+      console.log(req.query.oldImg)
+      fs.unlinkSync('public/images/'+req.query.oldImg)
+    }
+    res.status(201).json({ status: 'ok', data: data });
+  } catch (error) {
+    res.status(401).json({status:'error', data: error})
+    console.log(error)
+  }
 };
 
 productsCtrl.deleteProduct = async function (req, res, next) {
-  let data = await productsModel.findByIdAndDelete({ _id: req.params.id });
-  res.status(201).json({ status: 'ok', data: data });
+  
+  try {
+    let data = await productsModel.findByIdAndDelete({ _id: req.params.id });
+    fs.unlinkSync('public/images/'+req.params.img)
+    res.status(201).json({ status: 'ok', data: data });
+  } catch (error) {
+    res.status(401).json({status:'error', data: error})
+    console.log(error)
+  }
+  
 };
 
 productsCtrl.uploadImg = async function (req, res, next){
