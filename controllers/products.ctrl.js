@@ -8,7 +8,7 @@ var multerUpload = multer({dest: process.env.IMG_DIR}).single('photo');
 productsCtrl.getAll = async function (req, res, next) {
   let productos = await productsModel.paginate(
     {},
-    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 5, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
+    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 6, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
   );
   console.log(productos);
   res.status(200).json(productos);
@@ -43,14 +43,10 @@ productsCtrl.create = async function (req, res, next) {
 productsCtrl.update = async function (req, res, next) {
   try {
     let data = await productsModel.update({ _id: req.params.id }, req.body, { multi: false });
-    //Si hay datos de una imagen vieja, elimina la imagen
-    if(req.query.oldImg){
-      console.log(req.query.oldImg)
-      fs.unlinkSync('public/images/'+req.query.oldImg)
-    }
+    deleteImg(req.query.oldImg)
     res.status(201).json({ status: 'ok', data: data });
   } catch (error) {
-    res.status(401).json({status:'error', data: error})
+    res.status(404).json({status:'error', data: error})
     console.log(error)
   }
 };
@@ -59,7 +55,7 @@ productsCtrl.deleteProduct = async function (req, res, next) {
   
   try {
     let data = await productsModel.findByIdAndDelete({ _id: req.params.id });
-    fs.unlinkSync('public/images/'+req.params.img)
+    await deleteImg(req.params.img)
     res.status(201).json({ status: 'ok', data: data });
   } catch (error) {
     res.status(401).json({status:'error', data: error})
@@ -78,6 +74,15 @@ productsCtrl.uploadImg = async function (req, res, next){
     path = req.file.path;
     res.status(201).json({status: 'success', message: 'Img upload successfuly', data: req.file})
   })
+}
+
+function deleteImg(oldImg){
+  //eliminar imagen vieja  
+  fs.unlink('public/images/'+oldImg, function(err){
+    if(err){
+      console.log(err)
+    }
+  }) 
 }
 
 module.exports = productsCtrl;

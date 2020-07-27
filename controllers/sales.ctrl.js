@@ -30,7 +30,7 @@ salesCtrl.create = async (req, res, next) => {
   let sales = new salesModel({
     total: total,
     products: record,
-    user: req.body.userToken.userDecoded._id,
+    user: req.body.user_id,
   });
   let data = await sales.save();
   res.status(201).json({ status: 'ok', data: data });

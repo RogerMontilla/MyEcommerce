@@ -3,7 +3,7 @@ const categoryCtrl = {};
 
 categoryCtrl.create = async function (req, res, next) {
   let category = new categoryModel({
-    name: req.body.category,
+    category: req.body.category,
     description: req.body.description,
   });
   let data = await category.save();
