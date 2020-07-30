@@ -51,7 +51,7 @@ app.options('/*', function (req, res, next) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/staff', staff); //Se valida dentro de staff para dejar al login sin autenticacion
-app.use('/products', validateStaff, products);
+app.use('/products', products);
 app.use('/sales', sales);
 app.use('/category', validateStaff,category);
 app.use('/subcategory', subcategory);

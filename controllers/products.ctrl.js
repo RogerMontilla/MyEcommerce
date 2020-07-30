@@ -8,11 +8,18 @@ var multerUpload = multer({dest: process.env.IMG_DIR}).single('photo');
 productsCtrl.getAll = async function (req, res, next) {
   let productos = await productsModel.paginate(
     {},
-    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 6, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
+    { populate: [{path:'category', select:'name'}, {path:'subcategory', select:'subname'}] , limit: 8, sort: { name: -1 }, page: req.query.page ? req.query.page : 1 }
   );
   console.log(productos);
   res.status(200).json(productos);
 };
+
+productsCtrl.getByList = async function (req, res, next){
+  //console.log('LIST =>',req.query.list)
+  products = await productsModel.find().where('_id').in(req.query.list)
+  console.log(products);
+  res.status(200).json(products);
+}
 
 productsCtrl.getFeatured = async function (req, res, next) {
   let productos = await productsModel.find({ featured: 1 });

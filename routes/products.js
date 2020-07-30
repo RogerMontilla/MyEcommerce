@@ -1,24 +1,27 @@
 var express = require('express');
 var router = express.Router();
 var { validateStaff } = require('../middlewares/validateUser')
-var {getAll, getFeatured, getById, create, update, deleteProduct, uploadImg} = require('../controllers/products.ctrl')
+var {getAll, getFeatured, getById, getByList, create, update, deleteProduct, uploadImg} = require('../controllers/products.ctrl')
 
 /* GET products */
 router.get('/', getAll);
 
 /* POST products */
-router.post('/create', create);
+router.post('/create', validateStaff,create);
 
 /*Productos Destacados*/
-router.get('/destacados', getFeatured);
+router.get('/destacados', validateStaff, getFeatured);
 
 /*Productos ID*/
-router.get('/:id', getById);
+router.get('/by-list', getByList);
+
+router.get('/:id', validateStaff, getById);
+
 
 /*Actualizar un Producto */
-router.put('/:id', update);
+router.put('/:id', validateStaff, update);
 
-router.delete('/delete-product/:id/:img', deleteProduct);
+router.delete('/delete-product/:id/:img', validateStaff, deleteProduct);
 
 router.post('/upload-img', uploadImg);
 
