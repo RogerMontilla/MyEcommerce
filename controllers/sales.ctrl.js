@@ -8,22 +8,42 @@ salesCtrl.getAll = async (req, res, next) => {
 };
 
 salesCtrl.create = async (req, res, next) => {
-  let productsSearch = await productsModel
-    .find({})
-    .select(['_id', 'name', 'price'])
-    .where('_id')
-    .in(req.body.productsList);
+  console.log('productList =>', req.body.productsList);
+  console.log('User ID =>', req.body.user_id);
+  let list = req.body.productsList.map((item) => {
+    return item.id;
+  });
+  let productsSearch = await productsModel.find({}).select(['_id', 'name', 'price', 'offert']).where('_id').in(list);
 
-    console.log(productsSearch);
+  console.log(productsSearch);
 
+  //Obtener el total segun la cantidad de productos
   let total = 0;
+  productsSearch.forEach((element) => {
+    req.body.productsList.forEach((item) => {
+      if (item.id == element._id) {
+        if (element.offert) {
+          total += item.quantity * element.offert;
+        } else {
+          total += item.quantity * element.price;
+        }
+      }
+    });
+  });
 
   let record = productsSearch.map((productsSearch) => {
-    total += productsSearch.price;
+    let quantity = 0;
+    req.body.productsList.forEach((item) => {
+      if (item.id == productsSearch._id) {
+        quantity = item.quantity;
+      }
+    });
+
     return {
       product_id: productsSearch._id,
       name: productsSearch.name,
       price: productsSearch.price,
+      quantity: quantity, //quantity viene de la lista del front
     };
   });
 
@@ -37,4 +57,3 @@ salesCtrl.create = async (req, res, next) => {
 };
 
 module.exports = salesCtrl;
-
