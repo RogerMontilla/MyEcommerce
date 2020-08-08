@@ -23,9 +23,9 @@ salesCtrl.create = async (req, res, next) => {
     req.body.productsList.forEach((item) => {
       if (item.id == element._id) {
         if (element.offert) {
-          total += item.quantity * element.offert;
+          total += item.purchase * element.offert;
         } else {
-          total += item.quantity * element.price;
+          total += item.purchase * element.price;
         }
       }
     });
