@@ -7,6 +7,12 @@ salesCtrl.getAll = async (req, res, next) => {
   res.status(200).json(allsales);
 };
 
+salesCtrl.getByUser = async (req, res, next) => {
+  let user = req.params.id
+  let salesByUsers = await salesModel.find({}).where('user').in(user)
+  res.status(201).json({ status: 'ok', sales: salesByUsers });
+}
+
 salesCtrl.create = async (req, res, next) => {
   console.log('productList =>', req.body.productsList);
   console.log('User ID =>', req.body.user_id);

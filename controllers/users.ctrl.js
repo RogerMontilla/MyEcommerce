@@ -8,6 +8,11 @@ usersCtrl.allUsers = async (req, res, next) => {
   res.status(201).json({ data: data });
 };
 
+usersCtrl.getUserById = async (req, res, next) => {
+  let user = await usersModel.findOne({ _id: req.params.id});
+  res.status(201).json({ user: user });
+};
+
 usersCtrl.update = async (req, res, next) => {
   let data = await usersModel.update({ _id: req.params.id }, req.body, { multi: false });
   res.status(201).json({ status: 'User was updated successfully', data: data });

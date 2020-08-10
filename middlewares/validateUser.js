@@ -14,4 +14,4 @@ validateUser.validateStaff = (req, res, next) =>{
     });
   }
 
-  module.exports = validateUser;
+module.exports = validateUser;
