@@ -14,6 +14,7 @@ var products = require('./routes/products');
 var sales = require('./routes/sales');
 var category = require('./routes/category');
 var subcategory = require('./routes/subcategory');
+var static = require('./routes/static');
 
 var app = express();
 
@@ -49,11 +50,12 @@ app.options('/*', function (req, res, next) {
 /** HEADER FIN */
 
 app.use('/', index);
+app.use('/static', static);
 app.use('/users', users);
 app.use('/staff', staff); //Se valida dentro de staff para dejar al login sin autenticacion
 app.use('/products', products);
 app.use('/sales', sales);
-app.use('/category', validateStaff,category);
+app.use('/category', validateStaff, category);
 app.use('/subcategory', subcategory);
 
 // catch 404 and forward to error handler
