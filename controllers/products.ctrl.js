@@ -43,13 +43,10 @@ productsCtrl.getByPrice = async function (req, res, next) {
       }
     );
     res.status(200).json(products);
-  } else if(req.query.category != 'All' && req.query.max == 0){
+  } else if (req.query.category != 'All' && req.query.max == 0) {
     let products = await productsModel.paginate(
       {
-        $or: [
-          { price: { $gte: req.query.min } },
-          { offert: { $gte: req.query.min } },
-        ],
+        $or: [{ price: { $gte: req.query.min } }, { offert: { $gte: req.query.min } }],
         $and: [{ subcategory: req.query.category }],
       },
       {
@@ -63,7 +60,7 @@ productsCtrl.getByPrice = async function (req, res, next) {
       }
     );
     res.status(200).json(products);
-  }else{
+  } else {
     let products = await productsModel.paginate(
       {
         $or: [
@@ -131,6 +128,21 @@ productsCtrl.deleteProduct = async function (req, res, next) {
   } catch (error) {
     res.status(401).json({ status: 'error', data: error });
     console.log(error);
+  }
+};
+
+productsCtrl.getByName = async function (req, res, next) {
+  try {
+    var regex = new RegExp(escapeRegex(req.query.name), 'gi');
+    let products = await productsModel.find({ name: regex });
+    res.status(201).json({ status: 'ok', products: products });
+  } catch (error) {
+    res.status(401).json({ status: 'error', data: error });
+    console.log(error);
+  }
+
+  function escapeRegex(q) {
+    return q.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
   }
 };
 

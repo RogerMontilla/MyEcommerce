@@ -10,10 +10,13 @@ var {
   update,
   deleteProduct,
   uploadImg,
+  getByName,
 } = require('../controllers/products.ctrl');
 
 /* GET products */
 router.get('/', getAll);
+
+router.get('/by-name', getByName)
 
 router.get('/filter-price/', getByPrice)
 
