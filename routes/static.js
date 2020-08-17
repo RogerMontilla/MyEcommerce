@@ -4,7 +4,7 @@ var { validateStaff } = require('../middlewares/validateUser');
 var { create, update, getPages } = require('../controllers/static.ctrl')
 
 
-router.get('/', validateStaff, getPages);
+router.get('/', getPages);
 router.post('/create', validateStaff, create);
 router.put('/update/:id', validateStaff, update);
 

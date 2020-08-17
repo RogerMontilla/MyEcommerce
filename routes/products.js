@@ -3,9 +3,9 @@ var router = express.Router();
 var { validateStaff } = require('../middlewares/validateUser');
 var {
   getAll,
+  getByPrice,
   getFeatured,
   getById,
-  getByList,
   create,
   update,
   deleteProduct,
@@ -15,6 +15,8 @@ var {
 /* GET products */
 router.get('/', getAll);
 
+router.get('/filter-price/', getByPrice)
+
 /* POST products */
 router.post('/create', validateStaff, create);
 
@@ -22,7 +24,6 @@ router.post('/create', validateStaff, create);
 router.get('/destacados', validateStaff, getFeatured);
 
 /*Productos ID*/
-router.get('/by-list', validateStaff,getByList);
 
 router.get('/by-id/:id', validateStaff, getById);
 
