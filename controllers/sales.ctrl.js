@@ -7,6 +7,11 @@ salesCtrl.getAll = async (req, res, next) => {
   res.status(200).json(allsales);
 };
 
+salesCtrl.getAllWithUser = async (req, res, next) => {
+  let allsales = await salesModel.find({}).populate('user');
+  res.status(200).json(allsales);
+};
+
 salesCtrl.getByUser = async (req, res, next) => {
   let user = req.params.id
   let salesByUsers = await salesModel.find({}).where('user').in(user)
@@ -41,7 +46,7 @@ salesCtrl.create = async (req, res, next) => {
     let quantity = 0;
     req.body.productsList.forEach((item) => {
       if (item.id == productsSearch._id) {
-        quantity = item.quantity;
+        quantity = item.purchase;
       }
     });
 
