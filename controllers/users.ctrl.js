@@ -19,6 +19,7 @@ usersCtrl.update = async (req, res, next) => {
 };
 
 usersCtrl.signin = async (req, res, next) => {
+ try {
   let data = await usersModel.create({
     name: req.body.name,
     lastname: req.body.lastname,
@@ -27,6 +28,10 @@ usersCtrl.signin = async (req, res, next) => {
     email: req.body.email,
   });
   res.status(201).json({ status: 'User was created successfully', data: data });
+ } catch (error) {
+  res.status(409).json({ status: 'ERROR', code_error: error.code });
+ }
+  
 };
 
 usersCtrl.deleteUser = async (req, res, next) => {
