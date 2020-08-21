@@ -13,10 +13,10 @@ salesCtrl.getAllWithUser = async (req, res, next) => {
 };
 
 salesCtrl.getByUser = async (req, res, next) => {
-  let user = req.params.id
-  let salesByUsers = await salesModel.find({}).where('user').in(user)
+  let user = req.params.id;
+  let salesByUsers = await salesModel.find({}).where('user').in(user);
   res.status(201).json({ status: 'ok', sales: salesByUsers });
-}
+};
 
 salesCtrl.create = async (req, res, next) => {
   console.log('productList =>', req.body.productsList);
@@ -53,7 +53,7 @@ salesCtrl.create = async (req, res, next) => {
     return {
       product_id: productsSearch._id,
       name: productsSearch.name,
-      price: productsSearch.price,
+      price: productsSearch.offert ? productsSearch.offert : productsSearch.price,
       quantity: quantity, //quantity viene de la lista del front
     };
   });
